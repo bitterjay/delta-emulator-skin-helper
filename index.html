@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delta Skin Helper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="main-grid">
+    <div class="block">
+      <div class="heading">
+        <h1>Delta Skin Helper</h1>
+        <div class="start-form flex-row">
+          <div class="form-group flex-row">
+            <label for="nameInput">Name:</label>
+            <input type="text" id="nameInput" placeholder="Enter a name">
+          </div>
+          <div class="form-group flex-row">
+            <label for="consoleSelect">Console:</label>
+            <select id="consoleSelect">
+              <option value="">Select a console</option>
+              <option value="nes">NES</option>
+              <option value="snes">SNES</option>
+              <option value="n64">N64</option>
+              <option value="gbc">GBC</option>
+              <option value="gba">GBA</option>
+              <option value="nds">NDS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="debugCheckbox"> Debug
+            </label>
+          </div>
+          <a class="btn" href="https://noah978.gitbook.io/delta-docs/skins" target="_blank">docs</a>
+           Import JSON: <input type="file" id="jsonFileInput" accept="application/json">
+        </div>
+      </div>
+      <div id="tabsContainer" class="hide">
+        <div class="tabs">
+          <div class="left-tabs">
+            <button class="tablinks" onclick="openTab(event, 'StandardPortrait')">Standard Portrait</button>
+            <button class="tablinks" onclick="openTab(event, 'EdgeToEdgePortrait')">Edge-to-Edge Portrait</button>
+          </div>
+          <button class="tablinks" id="generateJsonBtn" onclick="openTab(event, 'generateJson')">Generate JSON</button>
+        </div>
+        <div id="StandardPortrait" class="tabcontent">
+          <div class="representation-item">
+            <div class="representation-block representation-title">
+              <div class="title-container">
+                  <h2>Standard Portrait</h2>
+                  <span class="dimensions">320 x 240</span>
+             </div>
+              <div class="asset-container">
+                <div class="asset-input-container">
+                  <label for="iphone-standard-portrait-asset">PDF Upload:</label>
+                  <input type="file" id="iphone-standard-portrait-pdf" accept="application/pdf">
+                </div>
+                <div class="asset-input-container">
+                  <label for="iphone-standard-portrait-asset">Image Name:</label>
+                  <input type="text" id="iphone-standard-portrait-asset" class="asset-input" data-representation="iphone-standard-portrait" data-asset="resizable">
+                  <button class="btn" onclick="saveCanvasAsPNG('iphone-standard-portrait-canvas')">Save as PNG</button>
+                  <button class="btn" onclick="saveCanvasAsScaledPNG('iphone-standard-portrait-canvas')">Save as 4x PNG</button>
+                </div>
+              </div>
+            </div>
+            <div class="representation-block content-container">
+              <div class="canvas-container">
+                <canvas class="canvas canvas-over" id="iphone-standard-portrait-canvas" width="320" height="240"></canvas>
+                <canvas class="canvas canvas-under" id="iphone-standard-portrait-canvas-pdf" width="320" height="240"></canvas>
+              </div>
+              <div class="button-fields">
+                <div id="iphone-standard-portrait-button-fields" class="button-fields-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="EdgeToEdgePortrait" class="tabcontent" style="display:none;">
+          <div class="representation-item">
+            <div class="representation-block representation-title">
+              <div class="title-container">
+                <h2>Edge-to-Edge Portrait</h2>
+                <span class="dimensions">320 x 274</span>
+              </div>
+              <div class="asset-container">
+                <div class="asset-input-container">
+                  <label for="iphone-edgetoedge-portrait-asset">PDF Upload:</label>
+                  <input type="file" id="iphone-edgetoedge-portrait-pdf" accept="application/pdf">
+                </div>
+                <div class="asset-input-container">
+                  <label for="iphone-edgetoedge-portrait-asset">Image Name:</label>
+                  <input type="text" id="iphone-edgetoedge-portrait-asset" class="asset-input" data-representation="iphone-edgetoedge-portrait" data-asset="resizable">
+                  <button class="btn" onclick="saveCanvasAsPNG('iphone-standard-portrait-canvas')">Save as PNG</button>
+                </div>
+              </div>
+            </div>
+            <div class="representation-block content-container">
+              <div class="canvas-container">
+                <canvas class="canvas canvas-over" id="iphone-edgetoedge-portrait-canvas" width="320" height="274"></canvas>
+                <canvas class="canvas canvas-under" id="iphone-edgetoedge-portrait-canvas-pdf" width="320" height="274"></canvas>
+              </div>
+              <div class="button-fields">
+                <div id="iphone-edgetoedge-portrait-button-fields" class="button-fields-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="generateJson" class="tabcontent" style="display:none">
+        <button id="generateBtn" class="btn--action" disabled>Generate JSON</button>
+         <button id="saveBtn" class="btn--action" disabled>Save JSON</button>
+
+        <div class="block">
+          <div class="json-output-container">
+            <pre id="jsonOutput"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+</body>
+</html>
