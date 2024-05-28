@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulator Skin Creator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="column input-column">
+            <h1>Delta Emulator Skin Button Helper</h2>
+            <form id="inputForm">
+                <div class="input-container">
+                    <div class="input-item">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div class="input-item">
+                        <label for="console">Console:</label>
+                        <select id="console" name="console" onchange="updateRepresentationFields()">
+                            <option value="">Select a console</option>
+                            <option value="gbc">GameBoy Color</option>
+                            <option value="gba">GameBoy Advance</option>
+                            <option value="ds">Nintendo DS</option>
+                            <option value="nes">Nintendo Entertainment System</option>
+                            <option value="snes">Super Nintendo Entertainment System</option>
+                            <option value="n64">Nintendo 64</option>
+                        </select>
+                    </div>
+                    <div class="input-item">
+                        <label for="skinname">Skin Name:</label>
+                        <input type="text" id="skinname" name="skinname">
+                    </div>
+                    <div class="input-item">
+                        <label for="debug">Debug:</label>
+                        <input type="checkbox" id="debug" name="debug">
+                    </div>
+                </div>
+            </form>
+            
+            <div id="tabsContainer" style="display: none;">
+                <h2>Representations</h2>
+                <div class="tabs" id="representationTabs">
+                    <!-- Tabs will be dynamically created here -->
+                </div>
+                <div id="representationFields">
+                    <!-- Fields will be dynamically created here -->
+                </div>
+            </div>
+        </div>
+        <div class="column output-column">
+            <h2>JSON Output</h2>
+            <button type="button" onclick="generateJSON()">Generate JSON</button>
+            <pre id="jsonOutput"></pre>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
