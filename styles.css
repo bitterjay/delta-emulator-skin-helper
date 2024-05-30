@@ -33,6 +33,11 @@ h3 {
     margin-top:1em;
 }
 
+label {
+    margin-top: 1em;
+    margin-bottom: .5em;
+}
+
 h1 {
     font-size:2em;
 }

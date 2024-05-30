@@ -23,6 +23,7 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                 <div class="canvas-container">
                     <canvas id="${device}-${representation}-${layout}-${index}-canvas" class="draggable"></canvas>
                     <p>Point Size: ${mappingSize.width}, ${mappingSize.height} </p>
+                    <button type="button" class="exportPngButton">Export as PNG</button>
                 </div>
              </div>
                     

@@ -11,6 +11,23 @@ import {
 var resizeHandleImage = new Image();
 resizeHandleImage.src = './img/resize-handle.png';
 
+let buttons = {}; // Array to store buttons
+let assets = {}; // Object to store asset filenames
+
+let buttonProperties = {
+    label: 'button',
+    x: 0,
+    y: 0,
+    width: 50,
+    height: 50,
+    extendedEdgesTop: 7,
+    extendedEdgesLeft: 7,
+    extendedEdgesRight: 7,
+    extendedEdgesBottom: 7
+};
+
+let backgroundImages = {}; // Cache for background images
+
 // Ensure the image is loaded before drawing it
 resizeHandleImage.onload = function() {
     console.log('Resize handle image loaded');
@@ -61,6 +78,7 @@ window.updateRepresentationFields = function updateRepresentationFields() {
                     representationContainer.innerHTML = generateRepresentationHTML(consoleSelect, device, representation, layout, screens,);
 
                     representationFields.appendChild(representationContainer);
+
                 });
             });
         });
@@ -72,6 +90,7 @@ window.updateRepresentationFields = function updateRepresentationFields() {
         }
     } else {
         tabsContainer.style.display = 'none';
+        document.getElementById('exportPngButton').disabled = true;
     }
 }
 
@@ -112,27 +131,21 @@ window.openTab = function openTab(device, representation, layout) {
             canvas.onmouseup = endInteraction;
             canvas.onmouseleave = endInteraction;
         });
+
+        // Check if any exportPngButton exists and set up the export functionality
+        const exportPngButtons = document.getElementsByClassName('exportPngButton');
+        Array.from(exportPngButtons).forEach(button => {
+            button.disabled = false;
+            button.onclick = exportCanvasAsPng;
+        });
+
+
     }
 
     document.getElementById('generateJsonButton').disabled = false;
 }
 
-let buttons = {}; // Array to store buttons
-let assets = {}; // Object to store asset filenames
 
-let buttonProperties = {
-    label: 'button',
-    x: 0,
-    y: 0,
-    width: 50,
-    height: 50,
-    extendedEdgesTop: 7,
-    extendedEdgesLeft: 7,
-    extendedEdgesRight: 7,
-    extendedEdgesBottom: 7
-};
-
-let backgroundImages = {}; // Cache for background images
 
 function drawCanvas(canvas, screen, mappingSize) {
     const context = canvas.getContext('2d');
@@ -384,11 +397,24 @@ window.updateAssetExample = function updateAssetExample(device, representation, 
     }
 }
 
-document.getElementById('generateJsonButton').onclick = function() {
-    document.getElementById('popup').style.display = "flex";
-    const jsonOutput = generateJSON(buttons, assets);
-    console.log(jsonOutput);
-};
+// Function to export canvas as PNG
+function exportCanvasAsPng() {
+    // Get the currently active canvas
+    const activeCanvas = document.querySelector('.representation-container:not([style*="display: none"]) canvas');
+
+    if (activeCanvas) {
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = activeCanvas.toDataURL('image/png');
+        link.download = `${activeCanvas.id}.png`;
+
+        // Programmatically click the link to trigger the download
+        link.click();
+    } else {
+        console.error('No active canvas found for export');
+    }
+}
+
 
 document.getElementById('close').onclick = function() {
     document.getElementById('popup').style.display = "none";
@@ -412,3 +438,9 @@ document.getElementById('save-button').addEventListener('click', function() {
     // Clean up the URL object
     URL.revokeObjectURL(link.href);
 });
+
+document.getElementById('generateJsonButton').onclick = function() {
+    document.getElementById('popup').style.display = "flex";
+    const jsonOutput = generateJSON(buttons, assets);
+    console.log(jsonOutput);
+};
