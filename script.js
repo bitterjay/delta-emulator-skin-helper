@@ -540,7 +540,7 @@ function downloadZip() {
     // Generate ZIP and trigger download
     zip.generateAsync({ type: 'blob' })
         .then(content => {
-            saveAs(content, `${name}.zip`);
+            saveAs(content, `${name}.deltaskin`);
         });
 }
 

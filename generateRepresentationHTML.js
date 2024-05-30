@@ -82,12 +82,14 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                     </div>
                     <div class="interactions-container">
                         <div class="interactions-block">
-                            <label for="assetFileBtn" class="customButton">Asset File (use pdf)</label>
+                            <label for="assetFileBtn" class="customButton">Layout Asset</label>
                             <input id="assetFileBtn" type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <p style="font-style:italic">PDF Asset will be included in Deltaskin</p>
                         </div>
                         <div class="interactions-block">
-                            <label for="assetExampleBtn" class="customButton">Asset Example (use png)</label>
+                            <label for="assetExampleBtn" class="customButton">Layout Background</label>
                             <input id="assetExampleBtn" type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <p style="font-style:italic">Layout Design (png)</p>
                         </div>
                     </div>
                 </div>
