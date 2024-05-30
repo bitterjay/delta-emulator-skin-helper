@@ -415,6 +415,106 @@ function exportCanvasAsPng() {
     }
 }
 
+// Function to import JSON file
+function importJsonFile(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const jsonContent = JSON.parse(e.target.result);
+                updateFieldsFromJson(jsonContent);
+            } catch (error) {
+                console.error('Error parsing JSON file:', error);
+                alert('Invalid JSON file. Please upload a valid JSON file.');
+            }
+        };
+        reader.readAsText(file);
+    }
+}
+
+// Function to update fields and canvas from JSON
+function updateFieldsFromJson(jsonContent) {
+    if (!jsonContent || typeof jsonContent !== 'object') {
+        console.error('Invalid JSON content');
+        return;
+    }
+
+    // Update the fields
+    document.getElementById('name').value = jsonContent.name || '';
+    const consoleType = jsonContent.gameTypeIdentifier.split('.').pop();
+    document.getElementById('console').value = consoleType || '';
+    document.getElementById('skinname').value = jsonContent.identifier.split('.').pop() || '';
+    document.getElementById('debug').checked = jsonContent.debug || false;
+
+    // Trigger updating representation fields and open the first tab
+    updateRepresentationFields();
+
+    // Update the representations
+    Object.keys(jsonContent.representations).forEach(device => {
+        Object.keys(jsonContent.representations[device]).forEach(representation => {
+            Object.keys(jsonContent.representations[device][representation]).forEach(layout => {
+                jsonContent.representations[device][representation][layout].forEach((screen, index) => {
+                    const canvasId = `${device}-${representation}-${layout}-${index}-canvas`;
+                    const screenData = screenSizes[consoleType][device][representation][layout][index];
+
+                    // Update the screen output frame
+                    screenData.outputFrame = screen.screen.outputFrame;
+
+                    buttons[canvasId] = screen.items.map(item => {
+                        // Check if the inputs are directional and change to "dpad"
+                        const inputs = item.inputs;
+                        const isDpad = inputs.up === "up" && inputs.down === "down" && inputs.left === "left" && inputs.right === "right";
+                        const isThumbstick = inputs.up === "analogStickUp" && inputs.down === "analogStickDown" && inputs.left === "analogStickLeft" && inputs.right === "analogStickRight";
+                        let label = item.inputs[0];
+                        if (isDpad) {
+                            label = "dpad";
+                        } else if (isThumbstick) {
+                            label = "thumbstick";
+                        }
+                        return {
+                            device,
+                            representation,
+                            layout,
+                            index,
+                            x: item.frame.x,
+                            y: item.frame.y,
+                            width: item.frame.width,
+                            height: item.frame.height,
+                            extendedEdgesTop: item.extendedEdges.top,
+                            extendedEdgesLeft: item.extendedEdges.left,
+                            extendedEdgesRight: item.extendedEdges.right,
+                            extendedEdgesBottom: item.extendedEdges.bottom,
+                            label: label // Use the updated label
+                        };
+                    });
+
+                    // Update canvas
+                    const canvas = document.getElementById(canvasId);
+                    if (canvas) {
+                        const context = canvas.getContext('2d');
+                        const representations = getRepresentations(consoleType, screenSizes);
+                        const mappingSize = representations[device][representation][layout]?.mappingSize;
+                        drawCanvas(canvas, screenData, mappingSize);
+                    }
+                });
+            });
+        });
+    });
+
+    // Ensure the fields match the updated canvas elements
+    Object.keys(buttons).forEach(canvasId => {
+        buttons[canvasId].forEach(button => {
+            updateButtonFields(button);
+            document.getElementById(`button-${button.label}-${button.device}-${button.representation}-${button.layout}-${button.index}`).classList.add('active');
+            // Toggle button states
+            document.getElementById(`add${button.label}Button-${button.device}-${button.representation}-${button.layout}-${button.index}`).disabled = true;
+            document.getElementById(`remove${button.label}Button-${button.device}-${button.representation}-${button.layout}-${button.index}`).disabled = false;
+        });
+    });
+
+    console.log('Fields and canvas updated from JSON');
+}
 
 document.getElementById('close').onclick = function() {
     document.getElementById('popup').style.display = "none";
@@ -422,7 +522,7 @@ document.getElementById('close').onclick = function() {
 
 document.getElementById('save-button').addEventListener('click', function() {
     // Get the text from the textarea
-    var textToSave = document.getElementById('jsonOutput').value;
+    var textToSave = document.getElementById('jsonOutput').innerHTML;
 
     // Create a blob with the text content
     var blob = new Blob([textToSave], { type: 'application/json' });
@@ -444,3 +544,6 @@ document.getElementById('generateJsonButton').onclick = function() {
     const jsonOutput = generateJSON(buttons, assets);
     console.log(jsonOutput);
 };
+
+// Add event listener for the import button
+document.getElementById('importJsonButton').addEventListener('change', importJsonFile);

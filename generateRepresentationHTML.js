@@ -82,12 +82,12 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                     </div>
                     <div class="interactions-container">
                         <div class="interactions-block">
-                            <p>Asset File (use pdf)</p>
-                            <input type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <label for="assetFileBtn" class="customButton">Asset File (use pdf)</label>
+                            <input id="assetFileBtn" type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
                         </div>
                         <div class="interactions-block">
-                            <p>Asset Example (use png)</p>
-                            <input type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <label for="assetExampleBtn" class="customButton">Asset Example (use png)</label>
+                            <input id="assetExampleBtn" type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
                         </div>
                     </div>
                 </div>

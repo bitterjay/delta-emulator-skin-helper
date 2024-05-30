@@ -56,9 +56,27 @@ button {
     font-weight:900;
     padding-inline:unset;
     padding:.8em 1.2em;
-
+    font-size:13px;
 }
 
+.customButton {
+    display:block;
+    border: none;
+    cursor: pointer;
+    background-color:var(--primary);
+    color:white;
+    text-decoration:none;
+    font-weight:900;
+    padding-inline:unset;
+    padding:.8em 1.2em;
+    font-size:13px;
+    text-align:center;
+}
+
+
+.customButton:hover {
+    background-color: var(--secondary);
+}
 button:hover {
     background-color: var(--secondary);
 }
@@ -217,7 +235,7 @@ select {
 }
 
 .tablinks.active {
-    background-color: var(--primary);
+    background-color: var(--secondary);
     color:white;
 }
 
@@ -403,7 +421,7 @@ button:disabled {
 }
 
 .screen-button, .assets .interactions-label {
-    background-color:var(--primary);
+    background-color:var(--secondary);
 }
 
 .popup {
@@ -425,13 +443,16 @@ button:disabled {
     padding: 1em;
     width:600px;
     max-height:80vh;
-    overflow:scroll;
+    overflow:hidden;
+
 }
 
 .jsonOutput {
     padding:1em;
     margin:0;
+    overflow:hidden;
 }
+
 
 pre {
     background-color: var(--dark);
@@ -440,6 +461,8 @@ pre {
     color:white;
     padding:1em;
     margin:0;
+    height:500px;
+    overflow:scroll;
 }
 
 .output-title {
@@ -473,4 +496,26 @@ pre {
     gap:1em;
     justify-content:center;
     align-items:center;
+}
+
+/* Hide the default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Style the custom file label */
+.custom-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-label:hover {
+    background-color: #0056b3;
 }

@@ -67,6 +67,7 @@ export function generateJSON(buttons, assets) {
 
                     canvasButtons.forEach(button => {
                         const item = {
+                            inputs: button.label,
                             frame: {
                                 x: button.x,
                                 y: button.y,
