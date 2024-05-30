@@ -81,11 +81,11 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                     </div>
                     <div class="interactions-container">
                         <div class="interactions-block">
-                            <p>Asset File</p>
+                            <p>Asset File (use pdf)</p>
                             <input type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
                         </div>
                         <div class="interactions-block">
-                            <p>Asset Example</p>
+                            <p>Asset Example (use png)</p>
                             <input type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
                         </div>
                     </div>
@@ -101,20 +101,20 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                             </div>
                             <div class="interactions-container">
                                 <div class="interactions-block">
-                                    <p for="${button}X-${device}-${representation}-${layout}-${index}">X</p>
-                                    <input type="number" id="${button}X-${device}-${representation}-${layout}-${index}" name="${button}X" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'x', this.value)">
+                                    <label for="${button}X-${device}-${representation}-${layout}-${index}">X</label>
+                                    <input type="number" id="${button}X-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'x', this.value)">
                                 </div>
                                 <div class="interactions-block">
-                                    <p for="${button}Y-${device}-${representation}-${layout}-${index}">Y </p>
-                                    <input type="number" id="${button}Y-${device}-${representation}-${layout}-${index}" name="${button}Y" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'y', this.value)">
+                                    <label for="${button}Y-${device}-${representation}-${layout}-${index}">Y </label>
+                                    <input type="number" id="${button}Y-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'y', this.value)">
                                 </div>
                                 <div class="interactions-block">
-                                    <p for="${button}Width-${device}-${representation}-${layout}-${index}">Width</p>
-                                    <input type="number" id="${button}Width-${device}-${representation}-${layout}-${index}" name="${button}Width" value="50" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'width', this.value)">
+                                    <label for="${button}Width-${device}-${representation}-${layout}-${index}">Width</label>
+                                    <input type="number" id="${button}Width-${device}-${representation}-${layout}-${index}" name="${button}" value="50" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'width', this.value)">
                                 </div>
                                 <div class="interactions-block">
-                                    <p for="${button}Height-${device}-${representation}-${layout}-${index}">Height</p>
-                                    <input type="number" id="${button}Height-${device}-${representation}-${layout}-${index}" name="${button}Height" value="50" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'height', this.value)">
+                                    <label for="${button}Height-${device}-${representation}-${layout}-${index}">Height</label>
+                                    <input type="number" id="${button}Height-${device}-${representation}-${layout}-${index}" name="${button}" value="50" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'height', this.value)">
                                 </div>
                                 <div class="extended-edges-container">
                                     <div class="extended-edges-label">
@@ -123,20 +123,20 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                                     <div class="extended-edges-inner">
                                     
                                         <div class="interactions-block">
-                                            <p for="${button}ExtendedEdgesTop-${device}-${representation}-${layout}-${index}">Top</p>
-                                            <input type="number" id="${button}ExtendedEdgesTop-${device}-${representation}-${layout}-${index}" name="${button}ExtendedEdgesTop" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesTop', this.value)">
+                                            <label for="${button}ExtendedEdgesTop-${device}-${representation}-${layout}-${index}">Top</label>
+                                            <input type="number" id="${button}ExtendedEdgesTop-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesTop', this.value)">
                                         </div>
                                         <div class="interactions-block">
-                                            <p for="${button}ExtendedEdgesLeft-${device}-${representation}-${layout}-${index}">Left</p>
-                                            <input type="number" id="${button}ExtendedEdgesLeft-${device}-${representation}-${layout}-${index}" name="${button}ExtendedEdgesLeft" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesLeft', this.value)">
+                                            <label for="${button}ExtendedEdgesLeft-${device}-${representation}-${layout}-${index}">Left</label>
+                                            <input type="number" id="${button}ExtendedEdgesLeft-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesLeft', this.value)">
                                         </div>
                                         <div class="interactions-block">
-                                            <p for="${button}ExtendedEdgesRight-${device}-${representation}-${layout}-${index}">Right</p>
-                                            <input type="number" id="${button}ExtendedEdgesRight-${device}-${representation}-${layout}-${index}" name="${button}ExtendedEdgesRight" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesRight', this.value)">
+                                            <label for="${button}ExtendedEdgesRight-${device}-${representation}-${layout}-${index}">Right</label>
+                                            <input type="number" id="${button}ExtendedEdgesRight-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesRight', this.value)">
                                         </div>
                                         <div class="interactions-block">
-                                            <p for="${button}ExtendedEdgesBottom-${device}-${representation}-${layout}-${index}">Bottom</p>
-                                            <input type="number" id="${button}ExtendedEdgesBottom-${device}-${representation}-${layout}-${index}" name="${button}ExtendedEdgesBottom" value="0" onchange="updateButtonProperties('${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesBottom', this.value)">
+                                            <label for="${button}ExtendedEdgesBottom-${device}-${representation}-${layout}-${index}">Bottom</label>
+                                            <input type="number" id="${button}ExtendedEdgesBottom-${device}-${representation}-${layout}-${index}" name="${button}" value="0" onchange="updateButtonProperties(event, '${device}', '${representation}', '${layout}', ${index}, 'extendedEdgesBottom', this.value)">
                                         </div>
                                     </div>
                                 </div>

@@ -83,6 +83,8 @@ window.openTab = function openTab(device, representation, layout) {
     // Hide all representation containers
     representationContainers.forEach(container => container.style.display = 'none');
 
+    document.getElementById('layouts').style.display = "block";
+
     // Remove 'active' class from all tabs
     tablinks.forEach(tab => tab.classList.remove('active'));
 
@@ -234,14 +236,25 @@ window.removeButton = function removeButton(device, representation, layout, inde
     document.getElementById(`button-${buttonType}-${device}-${representation}-${layout}-${index}`).classList.remove('active');
 }
 
-window.updateButtonProperties = function updateButtonProperties(device, representation, layout, index, property, value) {
+window.updateButtonProperties = function updateButtonProperties(event, device, representation, layout, index, property, value) {
     const canvasId = `${device}-${representation}-${layout}-${index}-canvas`;
-
     // Update the property of the button
     const canvasButtons = buttons[canvasId] || [];
+
+    const inputName = event.target.name; // Get the name of the input field
+    const inputValue = event.target.value; // Get the value of the input field
+
     canvasButtons.forEach(button => {
-        if (button.device === device && button.representation === representation && button.layout === layout && button.index === index) {
-            button[property] = property === 'label' ? value : parseInt(value, 10);
+
+        console.log(button.label);
+
+        if (button.device === device && 
+            button.representation === representation && 
+            button.layout === layout && 
+            button.index === index && 
+            button.label === inputName
+            ) {
+            button[property] = property === 'label' ? inputValue : parseInt(value, 10);
         }
     });
 
@@ -251,6 +264,9 @@ window.updateButtonProperties = function updateButtonProperties(device, represen
     const mappingSize = representations[device][representation][layout]?.mappingSize;
 
     drawCanvas(canvas, screen, mappingSize);
+
+    // Log the input field name for debugging
+    console.log("Interacted input field name:", inputName);
 }
 
 function drawScreen(context, screen, canvasWidth, canvasHeight) {
