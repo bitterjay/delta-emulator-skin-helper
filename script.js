@@ -73,6 +73,7 @@ window.updateRepresentationFields = function updateRepresentationFields() {
                     });
                     representationTabs.appendChild(tabButton);
 
+
                     // Create input fields
                     const representationContainer = document.createElement('div');
                     representationContainer.classList.add('representation-container');
@@ -82,8 +83,12 @@ window.updateRepresentationFields = function updateRepresentationFields() {
 
                     representationFields.appendChild(representationContainer);
 
+                    addButton(device, representation, layout, 0, "menu");
+
+
                 });
             });
+
         });
 
         // Open the first tab by default
@@ -141,7 +146,6 @@ window.openTab = function openTab(device, representation, layout) {
             button.disabled = false;
             button.onclick = exportCanvasAsPng;
         });
-
 
     }
 
@@ -375,8 +379,22 @@ window.updateAsset = function updateAsset(device, representation, layout, index,
         const canvasId = `${device}-${representation}-${layout}-${index}-canvas`;
         if (!assets[canvasId]) {
             assets[canvasId] = {};
+            updateFileName(device, representation, layout, index);
         }
         assets[canvasId].resizable = file.name;
+    }
+}
+
+// JavaScript function to update the file name display
+window.updateFileName = function updateFileName(device, representation, layout, index) {
+    const fileInput = document.getElementById(`assetFileBtn-${device}-${representation}-${layout}-${index}`);
+    const fileNameDisplay = document.getElementById(`fileName-${device}-${representation}-${layout}-${index}`);
+
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = fileInput.files[0].name;
+        document.getElementById(`assetFileLabel-${device}-${representation}-${layout}-${index}`).classList.remove('noInput');
+    } else {
+        fileNameDisplay.textContent = 'No file chosen';
     }
 }
 
@@ -448,7 +466,7 @@ function updateFieldsFromJson(jsonContent) {
     const consoleType = jsonContent.gameTypeIdentifier.split('.').pop();
     document.getElementById('console').value = consoleType || '';
     document.getElementById('skinname').value = jsonContent.identifier.split('.').pop() || '';
-    document.getElementById('debug').checked = jsonContent.debug || false;
+    document.getElementById('debugCheckbox').checked = jsonContent.debug || false;
 
     // Trigger updating representation fields and open the first tab
     updateRepresentationFields();
@@ -457,50 +475,53 @@ function updateFieldsFromJson(jsonContent) {
     Object.keys(jsonContent.representations).forEach(device => {
         Object.keys(jsonContent.representations[device]).forEach(representation => {
             Object.keys(jsonContent.representations[device][representation]).forEach(layout => {
-                jsonContent.representations[device][representation][layout].forEach((screen, index) => {
-                    const canvasId = `${device}-${representation}-${layout}-${index}-canvas`;
-                    const screenData = screenSizes[consoleType][device][representation][layout][index];
+                const layoutConfig = jsonContent.representations[device][representation][layout];
 
-                    // Update the screen output frame
-                    screenData.outputFrame = screen.screen.outputFrame;
+                // Extract screens
+                const screens = layoutConfig.screens[0]; // Assuming there's only one object in the screens array
+                const screenData = screenSizes[consoleType][device][representation][layout][0];
 
-                    buttons[canvasId] = screen.items.map(item => {
-                        // Check if the inputs are directional and change to "dpad"
-                        const inputs = item.inputs;
-                        const isDpad = inputs.up === "up" && inputs.down === "down" && inputs.left === "left" && inputs.right === "right";
-                        const isThumbstick = inputs.up === "analogStickUp" && inputs.down === "analogStickDown" && inputs.left === "analogStickLeft" && inputs.right === "analogStickRight";
-                        let label = item.inputs[0];
-                        if (isDpad) {
-                            label = "dpad";
-                        } else if (isThumbstick) {
-                            label = "thumbstick";
-                        }
-                        return {
-                            device,
-                            representation,
-                            layout,
-                            index,
-                            x: item.frame.x,
-                            y: item.frame.y,
-                            width: item.frame.width,
-                            height: item.frame.height,
-                            extendedEdgesTop: item.extendedEdges.top,
-                            extendedEdgesLeft: item.extendedEdges.left,
-                            extendedEdgesRight: item.extendedEdges.right,
-                            extendedEdgesBottom: item.extendedEdges.bottom,
-                            label: label // Use the updated label
-                        };
-                    });
+                // Update the screen output frame
+                screenData.inputFrame = screens.inputFrame;
+                screenData.outputFrame = screens.outputFrame;
 
-                    // Update canvas
-                    const canvas = document.getElementById(canvasId);
-                    if (canvas) {
-                        const context = canvas.getContext('2d');
-                        const representations = getRepresentations(consoleType, screenSizes);
-                        const mappingSize = representations[device][representation][layout]?.mappingSize;
-                        drawCanvas(canvas, screenData, mappingSize);
+                const canvasId = `${device}-${representation}-${layout}-0-canvas`;
+                buttons[canvasId] = layoutConfig.items.map(item => {
+                    // Check if the inputs are directional and change to "dpad" or "thumbstick"
+                    const inputs = item.inputs;
+                    const isDpad = inputs.up === "up" && inputs.down === "down" && inputs.left === "left" && inputs.right === "right";
+                    const isThumbstick = inputs.up === "analogStickUp" && inputs.down === "analogStickDown" && inputs.left === "analogStickLeft" && inputs.right === "analogStickRight";
+                    let label = item.inputs[0];
+                    if (isDpad) {
+                        label = "dpad";
+                    } else if (isThumbstick) {
+                        label = "thumbstick";
                     }
+                    return {
+                        device,
+                        representation,
+                        layout,
+                        index: 0,
+                        x: item.frame.x,
+                        y: item.frame.y,
+                        width: item.frame.width,
+                        height: item.frame.height,
+                        extendedEdgesTop: item.extendedEdges.top,
+                        extendedEdgesLeft: item.extendedEdges.left,
+                        extendedEdgesRight: item.extendedEdges.right,
+                        extendedEdgesBottom: item.extendedEdges.bottom,
+                        label: label // Use the updated label
+                    };
                 });
+
+                // Update canvas
+                const canvas = document.getElementById(canvasId);
+                if (canvas) {
+                    const context = canvas.getContext('2d');
+                    const representations = getRepresentations(consoleType, screenSizes);
+                    const mappingSize = representations[device][representation][layout]?.mappingSize;
+                    drawCanvas(canvas, screenData, mappingSize);
+                }
             });
         });
     });
@@ -532,15 +553,15 @@ function downloadZip() {
 
     console.log(uploadedFiles);
 
-    // Add uploaded files to ZIP
+    // Add uploaded files to ZIP (ensure they are added at the root level)
     uploadedFiles.forEach(file => {
         zip.file(file.name, file);
     });
 
     // Generate ZIP and trigger download
-    zip.generateAsync({ type: 'blob' })
+    zip.generateAsync({ type: 'uint8array' })
         .then(content => {
-            saveAs(content, `${name}.deltaskin`);
+            saveAs(new Blob([content]), `${name}.deltaskin`);
         });
 }
 
@@ -570,7 +591,6 @@ document.getElementById('save-button').addEventListener('click', function() {
 document.getElementById('generateJsonButton').onclick = function() {
     document.getElementById('popup').style.display = "flex";
     const jsonOutput = generateJSON(buttons, assets);
-    console.log(jsonOutput);
 };
 
 // Add event listener for the import button

@@ -18,14 +18,7 @@ export function generateRepresentationHTML(consoleSelect, device, representation
     screens.forEach((screen, index) => {
         const buttons = buttonConfigs[consoleSelect];
         html += `
-            <div class="container layout">
-                <h2>Layout</h2>
-                <div class="canvas-container">
-                    <canvas id="${device}-${representation}-${layout}-${index}-canvas" class="draggable"></canvas>
-                    <p>Point Size: ${mappingSize.width}, ${mappingSize.height} </p>
-                    <button type="button" class="exportPngButton">Export as PNG</button>
-                </div>
-             </div>
+            
                     
             <div class="container elements">
                 <h2>Elements</h2>
@@ -82,13 +75,14 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                     </div>
                     <div class="interactions-container">
                         <div class="interactions-block">
-                            <label for="assetFileBtn" class="customButton">Layout Asset</label>
-                            <input id="assetFileBtn" type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <label id="assetFileLabel-${device}-${representation}-${layout}-${index}" for="assetFileBtn-${device}-${representation}-${layout}-${index}" class="customButton noInput">Layout Asset</label>
+                            <input id="assetFileBtn-${device}-${representation}-${layout}-${index}" type="file" accept=".pdf" onchange="updateAsset('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <span id="fileName-${device}-${representation}-${layout}-${index}">No file chosen</span>
                             <p style="font-style:italic">PDF Asset will be included in Deltaskin</p>
                         </div>
                         <div class="interactions-block">
-                            <label for="assetExampleBtn" class="customButton">Layout Background</label>
-                            <input id="assetExampleBtn" type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
+                            <label id="assetExampleLabel-${device}-${representation}-${layout}-${index}" for="assetExampleBtn-${device}-${representation}-${layout}-${index}" class="customButton noInput">Layout Background</label>
+                            <input id="assetExampleBtn-${device}-${representation}-${layout}-${index}" type="file" accept=".png" onchange="updateAssetExample('${device}', '${representation}', '${layout}', ${index}, this)">
                             <p style="font-style:italic">Layout Design (png)</p>
                         </div>
                     </div>
@@ -148,6 +142,14 @@ export function generateRepresentationHTML(consoleSelect, device, representation
                     `).join('')}
                 </div>
             </div>
+            <div class="container layout">
+                <h2>Layout</h2>
+                <div class="canvas-container">
+                    <canvas id="${device}-${representation}-${layout}-${index}-canvas" class="draggable"></canvas>
+                    <p>Point Size: ${mappingSize.width}, ${mappingSize.height} </p>
+                    <button type="button" class="exportPngButton">Export as PNG</button>
+                </div>
+             </div>
         `;
     });
     return html;

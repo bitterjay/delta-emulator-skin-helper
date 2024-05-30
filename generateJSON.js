@@ -6,7 +6,7 @@ export function generateJSON(buttons, assets) {
     const name = document.getElementById('name').value;
     const consoleSelect = document.getElementById('console').value;
     const skinname = document.getElementById('skinname').value;
-    const debug = document.getElementById('debug').checked;
+    const debug = document.getElementById('debugCheckbox').checked;
     const screenData = screenSizes[consoleSelect];
 
     const identifier = `com.${name}.${consoleSelect}.${skinname}`;
@@ -47,19 +47,21 @@ export function generateJSON(buttons, assets) {
         identifier,
         gameTypeIdentifier,
         debug,
-        representations: {}
+        representations: {},
     };
 
     Object.keys(screenData).forEach(device => {
-        jsonOutput.representations[device] = {};
+        jsonOutput.representations[device] = {}; // Ensure this is an object
         Object.keys(screenData[device]).forEach(representation => {
-            jsonOutput.representations[device][representation] = {};
+            jsonOutput.representations[device][representation] = {}; // Ensure this is an object
             Object.keys(screenData[device][representation]).forEach(layout => {
-                jsonOutput.representations[device][representation][layout] = screenData[device][representation][layout].map((screen, index) => {
+                jsonOutput.representations[device][representation][layout] = {}; // Ensure this is an object to hold multiple layout configurations
+                screenData[device][representation][layout].forEach((screen, index) => {
                     const canvasId = `${device}-${representation}-${layout}-${index}-canvas`;
-                    console.log(buttons);
                     const canvasButtons = buttons[canvasId] || [];
                     let items = [];
+
+                    const mappingSize = representations[device][representation][layout].mappingSize;
 
                     if (canvasButtons.length === 0) {
                         console.warn(`No buttons found for canvas: ${canvasId}`);
@@ -108,14 +110,25 @@ export function generateJSON(buttons, assets) {
                         items.push(item);
                     });
 
-                    return {
+                    const layoutConfig = {
                         assets: assets[canvasId] || { resizable: "default.pdf" },
-                        screen: {
-                            inputFrame: screen.inputFrame,
-                            outputFrame: screen.outputFrame
-                        },
-                        items: items
+                        items: items,
+                        screens: [
+                            {
+                                inputFrame: screen.inputFrame,
+                                outputFrame: screen.outputFrame
+                            }
+                        ],
+                        mappingSize: mappingSize,
+                        extendedEdges: {
+                            "top" : 7,
+                            "bottom" : 7,
+                            "left" : 7,
+                            "right" : 7
+                        }
                     };
+
+                    jsonOutput.representations[device][representation][layout] = layoutConfig; // Assign the layoutConfig directly to the layout
                 });
             });
         });

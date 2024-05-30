@@ -73,6 +73,14 @@ button {
     text-align:center;
 }
 
+span {
+    margin-top:.3em;
+}
+
+.noInput {
+    background-color:#ccc;
+}
+
 
 .customButton:hover {
     background-color: var(--secondary);
@@ -119,7 +127,7 @@ pre {
 
 .representation-container {
     display:grid;
-    grid-template-columns: 4fr 400px;
+    grid-template-columns: 400px 4fr ;
     gap: 1em;
 
 }
@@ -380,6 +388,10 @@ button:disabled {
 
 .assets input {
     width:100%;
+}
+
+.assets .interactions-container {
+    text-align:center;
 }
 
 .individual-buttons label {
