@@ -12,7 +12,7 @@
             <h1>Delta Emulator Skin Editor</h1>
                 <div class="menu">
                     <button href="https://noah978.gitbook.io/delta-docs/skins" target="_blank">Delta Docs</button>
-                    <p>v0.4</p>
+                    <p>v0.9</p>
             </div>
         </div>
     </section>
@@ -64,7 +64,7 @@
                 <input type="file" id="importJsonButton" accept=".json"/>
                  <label for="importJsonButton" class="customButton">Import JSON</label>
                 <button type="button" id="generateJsonButton" disabled>Generate JSON</button>
-                
+                <button type="button" id="downloadZipButton" disabled>Download ZIP</button>
             </div>
         </div>
         <div id="representationFields">
@@ -88,6 +88,8 @@
             <pre id="jsonOutput"></pre>
         </div>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html>

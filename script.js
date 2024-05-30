@@ -14,6 +14,9 @@ resizeHandleImage.src = './img/resize-handle.png';
 let buttons = {}; // Array to store buttons
 let assets = {}; // Object to store asset filenames
 
+let uploadedFiles = []; // Array to store uploaded files
+let openTabUsed = false; // Flag to track if openTab has been used
+
 let buttonProperties = {
     label: 'button',
     x: 0,
@@ -516,6 +519,31 @@ function updateFieldsFromJson(jsonContent) {
     console.log('Fields and canvas updated from JSON');
 }
 
+function downloadZip() {
+    const zip = new JSZip();
+    const name = document.getElementById('name').value;
+    const consoleSelect = document.getElementById('console').value;
+    const skinname = document.getElementById('skinname').value;
+
+    // Generate JSON and add to ZIP
+    const jsonOutputElement = document.getElementById('jsonOutput');
+    const jsonOutput = jsonOutputElement.textContent;
+    zip.file('info.json', jsonOutput);
+
+    console.log(uploadedFiles);
+
+    // Add uploaded files to ZIP
+    uploadedFiles.forEach(file => {
+        zip.file(file.name, file);
+    });
+
+    // Generate ZIP and trigger download
+    zip.generateAsync({ type: 'blob' })
+        .then(content => {
+            saveAs(content, `${name}.zip`);
+        });
+}
+
 document.getElementById('close').onclick = function() {
     document.getElementById('popup').style.display = "none";
 };
@@ -547,3 +575,22 @@ document.getElementById('generateJsonButton').onclick = function() {
 
 // Add event listener for the import button
 document.getElementById('importJsonButton').addEventListener('change', importJsonFile);
+
+// Event delegation for dynamically generated assetFileBtn
+document.body.addEventListener('change', function(event) {
+    if (event.target && event.target.id === 'assetFileBtn') {
+        uploadedFiles = Array.from(event.target.files);
+        console.log(uploadedFiles);
+    }
+});
+
+document.getElementById('generateJsonButton').addEventListener('click', function() {
+    generateJSON(buttons, assets);
+    document.getElementById('downloadZipButton').disabled = false;
+});
+
+document.getElementById('downloadZipButton').addEventListener('click', function() {
+    downloadZip();
+});
+
+
