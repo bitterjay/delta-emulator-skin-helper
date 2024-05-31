@@ -232,6 +232,13 @@ window.addButton = function addButton(device, representation, layout, index, but
     document.getElementById(`remove${buttonType}Button-${device}-${representation}-${layout}-${index}`).disabled = false;
     document.getElementById(`button-${buttonType}-${device}-${representation}-${layout}-${index}`).classList.add('active');
 
+    const element = document.getElementById(`button-${buttonType}-${device}-${representation}-${layout}-${index}`);
+    const interactionsContainer = element.querySelector('.interactions-container');
+
+    if (element && element.classList.contains('active')) {
+        interactionsContainer.classList.remove('not-active');
+    }
+
     updateButtonFields(newButton);
     console.log(buttons);
 }
@@ -254,6 +261,13 @@ window.removeButton = function removeButton(device, representation, layout, inde
     document.getElementById(`add${buttonType}Button-${device}-${representation}-${layout}-${index}`).disabled = false;
     document.getElementById(`remove${buttonType}Button-${device}-${representation}-${layout}-${index}`).disabled = true;
     document.getElementById(`button-${buttonType}-${device}-${representation}-${layout}-${index}`).classList.remove('active');
+
+    const element = document.getElementById(`button-${buttonType}-${device}-${representation}-${layout}-${index}`);
+    const interactionsContainer = element.querySelector('.interactions-container');
+
+     if (element && !element.classList.contains('active')) {
+        interactionsContainer.classList.add('not-active');
+    }
 }
 
 window.updateButtonProperties = function updateButtonProperties(event, device, representation, layout, index, property, value) {
