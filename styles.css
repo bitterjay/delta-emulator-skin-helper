@@ -84,7 +84,7 @@ span {
 
 
 .customButton:hover {
-    background-color: var(--secondary);
+    background-color: var(--primary);
 }
 button:hover {
     background-color: var(--secondary);
@@ -130,7 +130,7 @@ pre {
     display:grid;
     grid-template-columns: 680px 1fr ;
     gap: 1em;
-
+    height: 100%;
 }
 
 .intro {
@@ -199,15 +199,6 @@ select {
     justify-content: flex-start;
     align-items:flex-start;
 }
-
-.canvas-container {
-    width: -webkit-fill-available;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-
 
 /* Tabbed content */
 
@@ -409,10 +400,12 @@ input::-webkit-inner-spin-button {
 
 .canvas-container {
     position: relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: -webkit-fill-available;
 }
 
 .draggable {
