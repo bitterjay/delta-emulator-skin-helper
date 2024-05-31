@@ -392,7 +392,6 @@ window.updateFileName = function updateFileName(device, representation, layout, 
 
     if (fileInput.files.length > 0) {
         fileNameDisplay.textContent = fileInput.files[0].name;
-        document.getElementById(`assetFileLabel-${device}-${representation}-${layout}-${index}`).classList.remove('noInput');
     } else {
         fileNameDisplay.textContent = 'No file chosen';
     }
@@ -413,6 +412,8 @@ window.updateAssetExample = function updateAssetExample(device, representation, 
         const screen = screenSizes[document.getElementById('console').value][device][representation][layout][index];
         const representations = getRepresentations(document.getElementById('console').value, screenSizes);
         const mappingSize = representations[device][representation][layout]?.mappingSize;
+
+        document.getElementById(`assetExampleLabel-${device}-${representation}-${layout}-${index}`).classList.remove('noInput');
 
         drawCanvas(canvas, screen, mappingSize);
     }
